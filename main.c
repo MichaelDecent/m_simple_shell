@@ -36,5 +36,6 @@ int main(int ac, char **av)
 		}
 
 	}
+	free_all(av, readline);
 	return (0);
 }

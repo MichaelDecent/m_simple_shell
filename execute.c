@@ -48,7 +48,7 @@ int execmd(char **av)
  * getpath - handles the PATH of a command
  * @cmd: the command
  *
- * Return: the path to the command
+ * Return: the path to the command if fails NULL
  */
 char *getpath(char *cmd)
 {

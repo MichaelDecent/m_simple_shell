@@ -16,7 +16,6 @@ char *getInput(void)
 		free(input);
 		return (NULL);
 	}
-	else
-		return (input);
+	return (input);
 
 }
