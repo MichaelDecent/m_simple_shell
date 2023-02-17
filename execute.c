@@ -13,9 +13,10 @@ int execmd(char **av)
 
 	if (av)
 	{
-		command = getpath(av[0]);
+		command = getpath(av[0]); /*handles the PATH, generates the path to the executable*/
 		if (command != NULL)
 		{
+			/*creating a child process*/
 			pid = fork();
 			if (pid == -1)
 			{
@@ -24,7 +25,7 @@ int execmd(char **av)
 			}
 			else if (pid == 0)
 			{
-
+				/*executing the command and checking for the failure of execve function*/
 				if (execve(command, av, NULL) == -1)
 				{
 					perror("Error");
@@ -35,6 +36,7 @@ int execmd(char **av)
 			}
 			else
 			{
+				/*calling wait function to avoid zombie process*/
 				wait(&status);
 				free(command);
 			}
@@ -48,7 +50,7 @@ int execmd(char **av)
  * getpath - handles the PATH of a command
  * @cmd: the command
  *
- * Return: the path to the command if fails NULL
+ * Return: the path to the command and  NULL if failed.
  */
 char *getpath(char *cmd)
 {
@@ -59,11 +61,13 @@ char *getpath(char *cmd)
 	struct stat stat_buf;
 	int token_len;
 
+	/*getting the content of enviroment variable "PATH" */
 	file_path = getenv("PATH");
 	if (file_path)
 	{
-		file_path_cpy = strdup(file_path);
-		pathtoken = strtok(file_path_cpy, ":");
+		file_path_cpy = strdup(file_path); /*dulicate the file_path*/
+		pathtoken = strtok(file_path_cpy, ":"); /*tokenizing file_path*/
+		/*building a file_path and checks whether it exists*/
 		while (pathtoken != NULL)
 		{
 			token_len = strlen(pathtoken);
@@ -77,7 +81,7 @@ char *getpath(char *cmd)
 			strcat(pathname, "/");
 			strcat(pathname, cmd);
 			strcat(pathname, "\0");
-			if (stat(pathname, &stat_buf) == 0)
+			if (stat(pathname, &stat_buf) == 0) /*checks if file path exists*/
 			{
 				free(file_path_cpy);
 				return (pathname);
@@ -86,7 +90,7 @@ char *getpath(char *cmd)
 			pathtoken = strtok(NULL, ":");
 		}
 		free(file_path_cpy);
-		if (stat(cmd, &stat_buf) == 0)
+		if (stat(cmd, &stat_buf) == 0) /*finally checks if command passed is a filepath*/
 		{
 			return (cmd);
 		}

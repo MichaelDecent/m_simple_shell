@@ -8,8 +8,7 @@ void exit_bult(char **av, char *readline)
 {
 	if (av[1] == NULL)
 	{
-		free(readline);
-		free(av);
+		free_all(av, readline);
 		exit(EXIT_SUCCESS);
 	}
 }
