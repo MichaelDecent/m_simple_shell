@@ -22,6 +22,7 @@ char *getpath(char *cmd);
 void exit_bult(char **av, char *readline);
 int handle_builtin(char **av);
 int display_env(char **av);
+int check_builtin(char **av);
 
 /* Clear the shell using escape sequence */
 #define clear() printf("\033[H\033[J")

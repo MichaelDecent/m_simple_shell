@@ -13,7 +13,9 @@ char **parser(char *readline)
 	int i;
 
 	if (readline == NULL)
+	{
 		return (NULL);
+	}
 
 	tokens = malloc(sizeof(char *) * 1024);
 	if (!tokens)

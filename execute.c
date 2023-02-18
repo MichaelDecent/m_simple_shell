@@ -11,9 +11,10 @@ int execmd(char **av)
 	pid_t pid;
 	int status;
 
-	if (av)
+	if (av != NULL)
 	{
-		command = getpath(av[0]); /*handles the PATH, generates the path to the executable*/
+		/*handles the PATH, generates the path to the executable*/
+		command = getpath(av[0]);
 		if (command != NULL)
 		{
 			/*creating a child process*/
@@ -39,12 +40,16 @@ int execmd(char **av)
 				/*calling wait function to avoid zombie process*/
 				wait(&status);
 				free(command);
+				return (0);
 			}
 		}
 		else
+		{
 			perror("Error: invalid command");
+			return (-1);
+		}
 	}
-	return (0);
+	return (-1);
 }
 /**
  * getpath - handles the PATH of a command
@@ -65,7 +70,7 @@ char *getpath(char *cmd)
 	file_path = getenv("PATH");
 	if (file_path)
 	{
-		file_path_cpy = strdup(file_path); /*dulicate the file_path*/
+		file_path_cpy = strdup(file_path); /*duplicate the file_path*/
 		pathtoken = strtok(file_path_cpy, ":"); /*tokenizing file_path*/
 		/*building a file_path and checks whether it exists*/
 		while (pathtoken != NULL)
@@ -90,7 +95,7 @@ char *getpath(char *cmd)
 			pathtoken = strtok(NULL, ":");
 		}
 		free(file_path_cpy);
-		if (stat(cmd, &stat_buf) == 0) /*finally checks if command passed is a filepath*/
+		if (stat(cmd, &stat_buf) == 0) /**finally checks if command passed is a filepath*/
 		{
 			return (cmd);
 		}

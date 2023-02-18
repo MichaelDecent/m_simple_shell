@@ -13,17 +13,9 @@ char *getInput(void)
 	/*reads line passed to the shell, and checks failure of getline function*/
 	if (getline(&input, &input_size, stdin) == -1)
 	{
-		if (feof(stdin))
-		{
-			free(input);
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			perror("Error: Exiting the shell...");
-			free(input);
-			exit(EXIT_FAILURE);
-		}
+		perror("Error: Exiting the shell...");
+		free(input);
+		exit(EXIT_FAILURE);
 	}
 	return (input);
 
