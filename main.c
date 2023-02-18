@@ -20,8 +20,6 @@ int main(int ac, char **av)
 		printf(">>>> "); /*prints my prompt*/
 
 		readline = getInput(); /*reads the input passed to the shell*/
-		if (readline == NULL)
-			return (-1);
 
 		av = parser(readline); /*breaks the input read into tokens*/
 		
@@ -30,6 +28,10 @@ int main(int ac, char **av)
 		{
 			exit_bult(av, readline);
 		}
+
+		/*checks and executes other builtins*/
+		if (handle_builtin(av) == 0)
+			continue;
 
 		/*executes the command passed*/
 		st = execmd(av);
